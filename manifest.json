@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Veri5Link",
+  "version": "1.0",
+  "description": "Scan webpages for valid, broken, and redirected links with style.",
+  "permissions": ["activeTab", "scripting", "downloads"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "128": "icons/icon128.png"
+  }
+}

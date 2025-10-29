@@ -1,0 +1,13 @@
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #6366f1;
+  border-radius: 10px;
+}
+button {
+  transition: all 0.2s ease-in-out;
+}
+button:active {
+  transform: scale(0.96);
+}
