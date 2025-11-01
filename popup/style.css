@@ -1,30 +1,37 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 
-body{
+body {
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
   color: #333;
-  padding: 20px;
   margin: 0;
+  width: 350px;
+  height: 350px;
 }
 
-.header{
+.header {
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
   text-align: center;
 }
 
-.header > span{
+.header > span {
   font-size: 1.3rem;
+  margin-top: 1rem;
 }
-.header > h1{
+.header > h1 {
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
 
-.header > p{
+.header > p {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -32,49 +39,70 @@ body{
   text-align: center;
 }
 
-.button-section{
+.button-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+button.btn-focus {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(64, 82, 181);
+  color: white;
+  padding: 0.8rem 1.6rem;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.btn-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 1.5rem 1rem;
+  margin-top: 1rem;
+  text-align: center;
 }
 
-button{
-  background-color: aliceblue;
+button {
+  /* background-color: aliceblue; */
   padding: 0.5rem;
   border-radius: 0.5rem;
   border-color: black;
-  /* font-weight: bold; */
   font-size: medium;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
-  border: black solid 1px;
+  border: black solid 2px;
+  text-align: center;
+  border-color: rgb(64, 82, 181);
+  background-color: white;
 }
 
-.link-section{
-  margin-top: 2rem;
+.link-section {
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 0 1rem;
 }
 
-.close-icon > svg{
-  width: 2rem;
-  height: 2rem;
-  display: flex; 
+.close-icon > span {
+  padding: 1rem 1rem;
+  display: flex;
 }
 
-.close-icon{
+.close-icon {
   display: flex;
   flex-direction: row;
   justify-content: end;
   cursor: pointer;
 }
 
-.link-item{
+.link-item {
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -84,49 +112,48 @@ button{
   border-radius: 0.5rem;
 }
 
-svg{
+svg {
   width: 1.5rem;
   height: 1.5rem;
+  fill: rgb(64, 82, 181);
 }
 
-.link-item > div{
+.link-item > div {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
 }
 
-.link-item > div > span{
+.link-item > div > span {
   font-size: 1.3rem;
 }
 
-.valid-link{
-  background-color: rgb(89, 232, 89);
+.valid-link {
+  background-color: rgba(89, 232, 89, 0.8);
 }
 
-.broken-link{
-  background-color: rgb(240, 102, 102);
+.broken-link {
+  background-color: rgba(240, 102, 102, 0.8);
 }
 
-.redirection-link{
-  background-color: rgb(255, 223, 102);
+.redirection-link {
+  background-color: rgba(255, 223, 102, 0.8);
 }
 
-.skipped-link{
-  background-color: rgb(200, 200, 200);
+.skipped-link {
+  background-color: rgba(200, 200, 200, 0.8);
 }
 
-.footer-section{
+.footer-section {
   margin-top: 1rem;
   padding: 1rem;
   font-size: 1rem;
   text-align: center;
   border-top: 2px solid #ccc;
-  
 }
 
-.container{
+.container {
   display: flex;
   flex-direction: column;
-
 }
