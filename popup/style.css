@@ -9,10 +9,16 @@ body{
 
 .header{
   padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
+.header > span{
+  font-size: 1.3rem;
+}
 .header > h1{
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -30,7 +36,7 @@ body{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 1rem 1rem;
+  padding: 1.5rem 1rem;
 }
 
 button{
@@ -48,7 +54,7 @@ button{
 }
 
 .link-section{
-  margin-top: 3rem;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -108,4 +114,19 @@ svg{
 
 .skipped-link{
   background-color: rgb(200, 200, 200);
+}
+
+.footer-section{
+  margin-top: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  border-top: 2px solid #ccc;
+  
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+
 }
