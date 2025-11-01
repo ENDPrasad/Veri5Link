@@ -1,0 +1,111 @@
+
+body{
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 20px;
+  margin: 0;
+}
+
+.header{
+  padding: 0 1rem;
+}
+
+.header > h1{
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.header > p{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.button-section{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+}
+
+button{
+  background-color: aliceblue;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border-color: black;
+  /* font-weight: bold; */
+  font-size: medium;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  border: black solid 1px;
+}
+
+.link-section{
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 1rem;
+}
+
+.close-icon > svg{
+  width: 2rem;
+  height: 2rem;
+  display: flex; 
+}
+
+.close-icon{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.link-item{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+svg{
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.link-item > div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.link-item > div > span{
+  font-size: 1.3rem;
+}
+
+.valid-link{
+  background-color: rgb(89, 232, 89);
+}
+
+.broken-link{
+  background-color: rgb(240, 102, 102);
+}
+
+.redirection-link{
+  background-color: rgb(255, 223, 102);
+}
+
+.skipped-link{
+  background-color: rgb(200, 200, 200);
+}
