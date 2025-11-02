@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      ,
       content="This extension will automatically detects, categorizes, and highlights all types of links on any website — including internal, external, broken, skipped, and redirected links."
     />
     <title>Veri5Link</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="popup.js"></script>
   </head>
   <body>
     <div class="container">
@@ -21,11 +19,11 @@
         <div class="header">
           <h1>Veri5Link</h1>
           <p>Check valid, broken, redirection and skipped links</p>
-          <span>Total Links: <strong>21</strong></span>
+          <span>Total Links: <strong id="total"></strong></span>
         </div>
         <div class="button-section">
           <div class="btn-container">
-            <button class="btn btn-focus" id="scanlinks">Scan</button>
+            <button class="btn btn-focus" id="scan">Scan</button>
           </div>
           <div class="btn-container">
             <button class="btn-primary btn">
@@ -56,7 +54,7 @@
         <div class="link-section">
           <div class="valid-link link-item">
             <div>
-              <span>✅ Valid Links: <strong>15</strong></span>
+              <span>✅ Valid Links: <strong id="valid"></strong></span>
             </div>
             <svg
               fill="#000000"
@@ -80,7 +78,7 @@
           </div>
           <div class="broken-link link-item">
             <div>
-              <span>❌ Broken Links: <strong>2</strong></span>
+              <span>❌ Broken Links: <strong id="broken"></strong></span>
             </div>
             <svg
               fill="#000000"
@@ -104,7 +102,7 @@
           </div>
           <div class="redirection-link link-item">
             <div>
-              <span>↪️ Redirected Links: <strong>3</strong></span>
+              <span>↪️ Redirected Links: <strong id="redirected"></strong></span>
             </div>
             <svg
               fill="#000000"
@@ -128,7 +126,7 @@
           </div>
           <div class="skipped-link link-item">
             <div>
-              <span>🚫 Skipped Links: <strong>1</strong></span>
+              <span>🚫 Skipped Links: <strong id="skipped"></strong></span>
             </div>
             <svg
               fill="#000000"
@@ -159,5 +157,7 @@
         >
       </footer>
     </div>
+
+    <script src="popup.js"></script>
   </body>
 </html>

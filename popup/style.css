@@ -80,6 +80,7 @@ button {
   text-align: center;
   border-color: rgb(64, 82, 181);
   background-color: white;
+  cursor: pointer;
 }
 
 .link-section {

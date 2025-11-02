@@ -1,92 +1,33 @@
-document.getElementById("scanBtn").addEventListener("click", async () => {
-  document.getElementById("progress").classList.remove("hidden");
-  document.getElementById("results").classList.add("hidden");
-  document.getElementById("listContainer").innerHTML = "";
+const scanBtn = document.getElementById('scan')
+const totalLinksCount = document.getElementById('total')
+const validLinksCount = document.getElementById('valid')
+const brokenLinksCount = document.getElementById('broken')
+const redirectedLinksCount = document.getElementById('redirected')
+const skippedLinksCount = document.getElementById('skipped')
 
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: scanLinksOnPage
-  }, async (injectionResults) => {
-    const data = injectionResults[0].result;
-    displayResults(data);
-  });
-});
 
-function displayResults(data) {
-  const { valid, broken, redirect } = data;
 
-  document.getElementById("progress").classList.add("hidden");
-  document.getElementById("results").classList.remove("hidden");
+console.log("hello")
+scanBtn.addEventListener('click', async ()=> {
+    console.log("Inside popUp JS")
+    // Get current tab
+    const [tab] = await chrome.tabs.query({active: true, currentWindow: true})
 
-  document.getElementById("totalCount").textContent = valid.length + broken.length + redirect.length;
-  document.getElementById("validCount").textContent = valid.length;
-  document.getElementById("redirectCount").textContent = redirect.length;
-  document.getElementById("brokenCount").textContent = broken.length;
+    // Collect all the links
+    const {links} = await chrome.tabs.sendMessage(tab.id, {action: "collect_links"})
+    console.log("Collected Links:", links)
 
-  const container = document.getElementById("listContainer");
-  [...valid, ...redirect, ...broken].forEach((item) => {
-    const div = document.createElement("div");
-    div.className = `p-2 rounded-md ${
-      item.status === 'valid'
-        ? 'bg-green-900 text-green-300'
-        : item.status === 'redirect'
-        ? 'bg-yellow-900 text-yellow-300'
-        : 'bg-red-900 text-red-300'
-    }`;
-    div.textContent = `${item.url} → ${item.code}`;
-    container.appendChild(div);
-  });
 
-  document.getElementById("downloadPdf").onclick = () => downloadReport(data, "pdf");
-  document.getElementById("downloadTxt").onclick = () => downloadReport(data, "txt");
-}
+    // Display count in the UI
+    totalLinksCount.innerText = links.length
+    
 
-async function downloadReport(data, type) {
-  const text = [
-    "Link Inspector Pro - Scan Report",
-    `Date: ${new Date().toLocaleString()}`,
-    "",
-    "VALID LINKS:",
-    ...data.valid.map(l => `${l.url} (${l.code})`),
-    "",
-    "REDIRECT LINKS:",
-    ...data.redirect.map(l => `${l.url} (${l.code})`),
-    "",
-    "BROKEN LINKS:",
-    ...data.broken.map(l => `${l.url} (${l.code})`),
-  ].join("\n");
-
-  const blob = new Blob([text], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  chrome.downloads.download({
-    url,
-    filename: `link-inspector-report.${type === "pdf" ? "txt" : "txt"}`,
-  });
-}
-
-function scanLinksOnPage() {
-  const anchors = [...document.querySelectorAll("a[href]")];
-  const results = { valid: [], broken: [], redirect: [] };
-
-  const checkLink = (a) => fetch(a.href, { method: "HEAD" })
-    .then((r) => {
-      if (r.status >= 200 && r.status < 300)
-        results.valid.push({ url: a.href, code: r.status, status: "valid" });
-      else if (r.status >= 300 && r.status < 400)
-        results.redirect.push({ url: a.href, code: r.status, status: "redirect" });
-      else
-        results.broken.push({ url: a.href, code: r.status, status: "broken" });
-      a.style.outline = r.status >= 200 && r.status < 300
-        ? "2px solid limegreen"
-        : r.status >= 300 && r.status < 400
-        ? "2px solid orange"
-        : "2px solid red";
-    })
-    .catch(() => {
-      results.broken.push({ url: a.href, code: "ERR", status: "broken" });
-      a.style.outline = "2px solid red";
+    // Check all link status
+    chrome.runtime.sendMessage({ action: "check_links", links }, response => {
+        console.log("Link check result:", response);
+        validLinksCount.innerText = response.results.valid.length
+        brokenLinksCount.innerText = response.results.broken.length
+        skippedLinksCount.innerText = response.results.skipped.length
+        redirectedLinksCount.innerText = response.results.redirected.length
     });
-
-  return Promise.all(anchors.map(checkLink)).then(() => results);
-}
+})

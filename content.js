@@ -1,30 +1,71 @@
-if (window._linkInspectorInjected) return;
-window._linkInspectorInjected = true;
+function collect_links() {
+    const anchors = document.querySelectorAll('a[href]')
 
-const style = document.createElement("style");
-style.innerHTML = `
-  a[data-li-status] { position: relative; border-bottom: 3px solid transparent; }
-  a[data-li-status="valid"] { border-color: #10b981; }
-  a[data-li-status="redirect"] { border-color: #f59e0b; }
-  a[data-li-status="broken"] { border-color: #ef4444; }
-  a[data-li-status="timeout"] { border-color: #94a3b8; }
-`;
-document.head.appendChild(style);
+    const links = []
+    for(let a of anchors) {
+        const href = a.href.trim()
+        if(href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) {
+            links.push({url: href, type: 'skipped'})
+        } else {
+            links.push({url: href, type: 'normal'})
+        }
+    }
+    return links
+}
 
-chrome.runtime.onMessage.addListener(async (msg) => {
-  if (msg.action === "clearHighlights") {
-    document.querySelectorAll("a[data-li-status]").forEach(a => {
-      a.removeAttribute("data-li-status");
-    });
-  }
-  if (msg.action === "collectLinks") {
-    const urls = Array.from(document.querySelectorAll("a[href]")).map(a => a.href);
-    chrome.runtime.sendMessage({ action: "linksFound", urls, tabId: msg.tabId });
-  }
-  if (msg.action === "highlightLinks") {
-    msg.results.forEach(r => {
-      const link = [...document.querySelectorAll("a[href]")].find(a => a.href === r.url);
-      if (link) link.setAttribute("data-li-status", r.type);
-    });
-  }
-});
+// Listen for the messages
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("inside content listener")
+    if(message.action === 'collect_links') {
+        sendResponse({links: collect_links()})
+    }
+
+    if(message.action === "check_links") {
+        console.log(message)
+        checkLinks(message.links).then(results => {
+            console.log(results)
+            sendResponse({results})
+        })
+        return true
+    }
+})
+
+
+
+
+
+
+// Listen to the messages
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if(message.action === "check_links") {
+//         console.log(message)
+//         checkLinks(message.links).then(results => {
+//             console.log(results)
+//             sendResponse({results})
+//         })
+//         return true
+//     }
+// })
+
+async function  checkLinks(links) {
+    const results = []
+    for(let link of links) {
+        if(link.type === 'skipped'){
+            results.push({url: link.url, status: 'skipped'})
+            continue
+        }
+
+        try {
+            const res = await fetch(link.url, {method: 'HEAD',  redirect: 'follow'})
+            if(res.ok) {
+                results.push( {url: link.url, status: res.redirected ? 'redirected': 'valid'})
+            }else {
+                results.push({url: link.url, status: 'broken', code: res.status})
+            }
+        } catch (error) {
+            results.push({url: link.url, status: 'warning', message: error.message})
+        }
+    }
+    return results
+    
+}

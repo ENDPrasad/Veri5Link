@@ -2,24 +2,41 @@
   "manifest_version": 3,
   "name": "Veri5Link",
   "version": "1.0",
-  "description": "Scan webpages for valid, broken, and redirected links with style.",
-  "permissions": ["activeTab", "scripting", "downloads"],
+  "description": "Scans web pages for valid, broken, and redirect links. Visual reports with colored highlights and downloadable summaries.",
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "downloads"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup/popup.html",
     "default_icon": {
-      "128": "icons/icon128.png"
-    }
+          "128": "icons/icon128.png"
+
+    },
+    "default_popup": "popup/popup.html"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "css": ["contentStyles.css"]
     }
   ],
-  "icons": {
-    "128": "icons/icon128.png"
-  }
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
