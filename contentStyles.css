@@ -1,0 +1,56 @@
+
+/* styles/linkChecker.css */
+
+/* Highlighting for links based on their status */
+a[data-slc-status="valid"] {
+    background: rgba(34,200,94,0.15) !important;
+    outline: 2.5px solid rgba(34,200,94,0.59) !important;
+    border-radius: 5px !important;
+    transition: background 0.18s, outline 0.18s;
+}
+
+a[data-slc-status="broken"] {
+    background: rgba(237,59,59,0.16) !important;
+    outline: 2.5px solid rgba(237,59,59,0.65) !important;
+    border-radius: 5px !important;
+    transition: background 0.18s, outline 0.18s;
+}
+
+a[data-slc-status="redirect"] {
+    background: rgba(245,166,35,0.17) !important;
+    outline: 2.5px solid rgba(245,166,35,0.63) !important;
+    border-radius: 5px !important;
+    transition: background 0.18s, outline 0.18s;
+}
+
+a[data-slc-status="checking"] {
+    background: #f2f5fc !important;
+    outline: 2px dotted #b4b7be !important;
+    border-radius: 5px !important;
+}
+
+a[data-slc-status] {
+    position: relative;
+    z-index: 250;
+    box-decoration-break: clone;
+    padding: 1.5px 3.5px;
+}
+
+/* Tooltip (global for extension, in-page) */
+#slc-link-tooltip {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.14s, top 0.18s, left 0.18s;
+    word-break: break-all;
+    border-radius: 8px;
+    box-shadow: 0 3px 9px 0 rgba(32,27,75,0.13);
+    padding: 8px 14px;
+    font-size: 0.94em;
+    background: #fff;
+    color: #232733;
+    border: 2px solid #4682bf;
+    display: none;
+    max-width: 48vw;
+}
+
