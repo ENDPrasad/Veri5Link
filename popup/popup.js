@@ -4,8 +4,10 @@ const validLinksCount = document.getElementById('valid')
 const brokenLinksCount = document.getElementById('broken')
 const redirectedLinksCount = document.getElementById('redirected')
 const skippedLinksCount = document.getElementById('skipped')
-
-
+const resetBtn = document.getElementById('reset')
+resetBtn.addEventListener('click', ()=> {
+    window.location.reload();
+})
 
 console.log("hello")
 scanBtn.addEventListener('click', async ()=> {
