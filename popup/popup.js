@@ -6,10 +6,18 @@ const redirectedLinksCount = document.getElementById('redirected')
 const skippedLinksCount = document.getElementById('skipped')
 const resetBtn = document.getElementById('reset')
 const downloadBtn = document.getElementById('download-report')
+const closeBtn =  document.getElementById('close')
+
 var validLinks = {}
 var brokenLinks = {}
 var redirectedLinks = {}
 var skippedLinks = {}
+
+closeBtn.addEventListener('click', ()=> {
+    window.close();
+})
+
+
 resetBtn.addEventListener('click', ()=> {
     window.location.reload();
 })
