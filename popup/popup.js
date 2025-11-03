@@ -5,6 +5,11 @@ const brokenLinksCount = document.getElementById('broken')
 const redirectedLinksCount = document.getElementById('redirected')
 const skippedLinksCount = document.getElementById('skipped')
 const resetBtn = document.getElementById('reset')
+const downloadBtn = document.getElementById('download-report')
+var validLinks = {}
+var brokenLinks = {}
+var redirectedLinks = {}
+var skippedLinks = {}
 resetBtn.addEventListener('click', ()=> {
     window.location.reload();
 })
@@ -38,6 +43,31 @@ scanBtn.addEventListener('click', async ()=> {
         scanBtn.innerText = "Scan"
         scanBtn.style.backgroundColor = "rgb(64, 82, 181)"
         scanBtn.style.color = "white"
+
+        downloadBtn.addEventListener('click', async ()=> {
+            const data = response.results
+            console.log("final results:", data)
+
+            validLinks = data.valid.map(link => link.url);
+            brokenLinks = data.broken.map(link => link.url);
+            redirectedLinks = data.redirected.map(link => link.url);
+            skippedLinks = data.skipped.map(link => link.url);
+            const text =
+            "Valid Links:\n\n" +
+            (validLinks.length ? validLinks.join("\n") : "None") +
+            "\n\nRedirected Links:\n\n" +
+            (redirectedLinks.length ? redirectedLinks.join("\n") : "None") +
+            "\n\nBroken Links:\n\n" +
+            (brokenLinks.length ? brokenLinks.join("\n") : "None") +
+            "\n\nSkipped Links:\n\n" +
+            (skippedLinks.length ? skippedLinks.join("\n") : "None");
+            const blob = new Blob([text], { type: 'application/json' });
+            const url = URL.createObjectURL(blob); 
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Links-List.txt';
+            a.click();
+            URL.revokeObjectURL(url);
     });
 })
 
