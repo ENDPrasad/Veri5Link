@@ -66,6 +66,10 @@ button.btn-focus {
   text-align: center;
 }
 
+svg{
+  cursor: pointer;
+}
+
 button {
   /* background-color: aliceblue; */
   padding: 0.5rem;
