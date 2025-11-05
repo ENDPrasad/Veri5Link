@@ -15,25 +15,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 async function  checkLinks(links) {
-    const results = {skipped: [], valid: [], broken: [], redirected: []}
+    const results = {skipped: [], valid: [], broken: [], redirected: [], warning: []}
+    const linkMapper = {}
     for(let link of links) {
         if(link.type === 'skipped'){
             results.skipped.push({url: link.url, status: 'skipped'})
+            linkMapper[link.url] = 'skipped'
             continue
         }
 
         try {
-            const res = await fetch(link.url, {method: 'GET',  redirect: 'follow'})
+            const res = await fetch(link.url, {method: 'HEAD',  redirect: 'follow'})
             if(res.ok) {
                 const key = res.redirected ? 'redirected': 'valid'
                 results[key].push( {url: link.url, status: key})
+                linkMapper[link.url] = key
             }else {
                 results.broken.push({url: link.url, status: 'broken', code: res.status})
+                linkMapper[link.url] = 'broken'
+
             }
         } catch (error) {
             results.warning.push({url: link.url, status: 'warning', message: error.message})
+            linkMapper[link.url] = 'warning'
+
         }
     }
-    return results
+    return {results, linkMapper}
     
 }
