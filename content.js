@@ -20,52 +20,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({links: collect_links()})
     }
 
-    if(message.action === "check_links") {
+    if(message.action === "highlight_links") {
         console.log(message)
-        checkLinks(message.links).then(results => {
-            console.log(results)
-            sendResponse({results})
-        })
-        return true
+        highlight_links(message.linkMapper)
     }
 })
 
+function highlight_links(linkMapper) {
+    const anchors = document.querySelectorAll('a[href]')
 
-
-
-
-
-// Listen to the messages
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     if(message.action === "check_links") {
-//         console.log(message)
-//         checkLinks(message.links).then(results => {
-//             console.log(results)
-//             sendResponse({results})
-//         })
-//         return true
-//     }
-// })
-
-async function  checkLinks(links) {
-    const results = []
-    for(let link of links) {
-        if(link.type === 'skipped'){
-            results.push({url: link.url, status: 'skipped'})
-            continue
-        }
-
-        try {
-            const res = await fetch(link.url, {method: 'HEAD',  redirect: 'follow'})
-            if(res.ok) {
-                results.push( {url: link.url, status: res.redirected ? 'redirected': 'valid'})
-            }else {
-                results.push({url: link.url, status: 'broken', code: res.status})
-            }
-        } catch (error) {
-            results.push({url: link.url, status: 'warning', message: error.message})
+    for(let a of anchors) {
+        const href = a.href.trim()
+        const value = linkMapper[href]
+        if(value === 'valid'){
+            a.style.backgroundColor = 'rgba(34,200,94,0.15)'
+            a.style.border = '1px solid rgba(34,200,94,0.59)'
+        }else if(value === 'skipped') {
+            a.style.backgroundColor = 'rgba(128,128,128,0.15)'
+            a.style.border = '1px solid rgba(128,128,128,0.5)'
+        }else if(value === 'redirected') {
+            a.style.backgroundColor = 'rgba(255,215,0,0.15)'
+            a.style.border = '1px solid rgba(255,215,0,0.6)'
+        }else if(value === 'broken') {
+            a.style.backgroundColor = 'rgba(237,59,59,0.16)'
+            a.style.borderColor = '1px solid rgba(237,59,59,0.65)'
+        }else {
+            // Need to handle error links
         }
     }
-    return results
-    
 }
