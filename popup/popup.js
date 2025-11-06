@@ -8,11 +8,6 @@ const resetBtn = document.getElementById('reset')
 const downloadBtn = document.getElementById('download-report')
 const closeBtn =  document.getElementById('close')
 
-var validLinks = {}
-var brokenLinks = {}
-var redirectedLinks = {}
-var skippedLinks = {}
-
 closeBtn.addEventListener('click', ()=> {
     window.close();
 })
@@ -56,10 +51,10 @@ scanBtn.addEventListener('click', async ()=> {
             const data = response.results
             console.log("final results:", data)
 
-            validLinks = data.valid.map(link => link.url);
-            brokenLinks = data.broken.map(link => link.url);
-            redirectedLinks = data.redirected.map(link => link.url);
-            skippedLinks = data.skipped.map(link => link.url);
+            const validLinks = data.valid.map(link => link.url);
+            const brokenLinks = data.broken.map(link => link.url);
+            const redirectedLinks = data.redirected.map(link => link.url);
+            const skippedLinks = data.skipped.map(link => link.url);
             const text =
             "Valid Links:\n\n" +
             (validLinks.length ? validLinks.join("\n") : "None") +
