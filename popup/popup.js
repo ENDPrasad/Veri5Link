@@ -47,29 +47,7 @@ scanBtn.addEventListener("click", async () => {
   scanBtn.style.color = "white";
 
   downloadBtn.addEventListener("click", async () => {
-    const data = results.results;
-    console.log("final results:", data);
-
-    const validLinks = data.valid.map((link) => link.url);
-    const brokenLinks = data.broken.map((link) => link.url);
-    const redirectedLinks = data.redirected.map((link) => link.url);
-    const skippedLinks = data.skipped.map((link) => link.url);
-    const text =
-      "Valid Links:\n\n" +
-      (validLinks.length ? validLinks.join("\n") : "None") +
-      "\n\nRedirected Links:\n\n" +
-      (redirectedLinks.length ? redirectedLinks.join("\n") : "None") +
-      "\n\nBroken Links:\n\n" +
-      (brokenLinks.length ? brokenLinks.join("\n") : "None") +
-      "\n\nSkipped Links:\n\n" +
-      (skippedLinks.length ? skippedLinks.join("\n") : "None");
-    const blob = new Blob([text], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Links-List.txt";
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadReport(results.results);
   });
 
   await chrome.tabs.sendMessage(tab.id, {
@@ -89,4 +67,28 @@ function sendMessageAsync(message) {
       }
     });
   });
+}
+
+function downloadReport(data) {
+  const categories = ["valid", "redirected", "broken", "skipped"];
+
+  // Build text dynamically based on available categories
+  const text = categories
+    .map((key) => {
+      const links = data[key]?.map((link) => link.url) || [];
+      const sectionTitle =
+        key.charAt(0).toUpperCase() + key.slice(1) + " Links:";
+      const sectionContent = links.length ? links.join("\n") : "None";
+      return `${sectionTitle}\n\n${sectionContent}`;
+    })
+    .join("\n\n");
+
+  // Create a downloadable text file
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Links-List.txt";
+  a.click();
+  URL.revokeObjectURL(url);
 }

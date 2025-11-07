@@ -113,10 +113,13 @@ button {
   border-radius: 0.5rem;
 }
 
-.downloadIcon > svg {
+svg{
   width: 1.5rem;
   height: 1.5rem;
   fill: rgb(64, 82, 181);
+}
+
+.download-Icon {
   cursor: pointer;
 }
 
@@ -157,5 +160,5 @@ button {
 
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
 }
