@@ -51,27 +51,8 @@ scanBtn.addEventListener("click", async () => {
   scanBtn.style.color = "white";
   const categories = ["valid", "redirected", "broken", "skipped"];
 
-  // Download report event listeners
-  downloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, categories);
-  });
-
-  // Individual category download listeners
-  validLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[0]], filename="Valid-Links-Report");
-  });
-
-  brokenLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[2]], filename="Broken-Links-Report");
-  });
-
-  redirectedLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[1]], filename="Redirected-Links-Report");
-  });
-
-  skippedLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[3]], filename="Skipped-Links-Report");
-  });
+  // Calling download event listener function
+  downloadEventListener(results);
 
   await chrome.tabs.sendMessage(tab.id, {
     action: "highlight_links",
@@ -113,4 +94,32 @@ function downloadReport(data, categories, filename="All-Links-Report") {
   a.download = filename+".txt";
   a.click();
   URL.revokeObjectURL(url);
+}
+
+
+// Download report event listeners
+function downloadEventListener(results) {
+  const categories = ["valid", "redirected", "broken", "skipped"];
+
+  // Download report event listeners
+  downloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, categories);
+  });
+
+  // Individual category download listeners
+  validLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[0]], filename="Valid-Links-Report");
+  });
+
+  brokenLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[2]], filename="Broken-Links-Report");
+  });
+
+  redirectedLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[1]], filename="Redirected-Links-Report");
+  });
+
+  skippedLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[3]], filename="Skipped-Links-Report");
+  });
 }

@@ -91,16 +91,39 @@ button {
   padding: 0 1rem;
 }
 
-.close-icon > span {
+img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 5rem;
+}
+
+.header-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.site-header > span {
   padding: 1rem 1rem;
   display: flex;
 }
 
-.close-icon {
+.site-header {
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content:space-between;
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  background-color: rgb(64, 82, 181);
+  color: white;
+}
+
+#close {
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .link-item {
