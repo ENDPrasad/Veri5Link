@@ -75,7 +75,7 @@ function sendMessageAsync(message) {
 }
 
 // Function to download report
-function downloadReport(data, categories, filename="All-Links-Report") {
+function downloadReport(data, categories) {
   // Build text dynamically based on available categories
   const text = categories
     .map((key) => {
@@ -92,6 +92,7 @@ function downloadReport(data, categories, filename="All-Links-Report") {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
+  filename = categories.length === 1? categories[0].charAt(0).toUpperCase() + categories[0].slice(1) + "-Links-Report" : "All-Links-Report";
   a.download = filename+".txt";
   a.click();
   URL.revokeObjectURL(url);
@@ -100,7 +101,7 @@ function downloadReport(data, categories, filename="All-Links-Report") {
 
 // Download report event listeners
 function downloadEventListener(results) {
-  
+
   // Download report event listeners
   downloadBtn.addEventListener("click", async () => {
     downloadReport(results.results, categories);
@@ -108,18 +109,18 @@ function downloadEventListener(results) {
 
   // Individual category download listeners
   validLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[0]], filename="Valid-Links-Report");
+    downloadReport(results.results, [categories[0]]);
   });
 
   brokenLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[2]], filename="Broken-Links-Report");
+    downloadReport(results.results, [categories[2]]);
   });
 
   redirectedLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[1]], filename="Redirected-Links-Report");
+    downloadReport(results.results, [categories[1]]);
   });
 
   skippedLinksDownloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results, [categories[3]], filename="Skipped-Links-Report");
+    downloadReport(results.results, [categories[3]]);
   });
 }
