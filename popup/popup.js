@@ -11,6 +11,8 @@ const validLinksDownloadBtn = document.getElementById("valid-links-download");
 const brokenLinksDownloadBtn = document.getElementById("broken-links-download");
 const redirectedLinksDownloadBtn = document.getElementById("redirected-links-download");
 const skippedLinksDownloadBtn = document.getElementById("skipped-links-download");
+const categories = ["valid", "redirected", "broken", "skipped"];
+
 
 closeBtn.addEventListener("click", () => {
   window.close();
@@ -49,7 +51,6 @@ scanBtn.addEventListener("click", async () => {
   scanBtn.innerText = "Scan";
   scanBtn.style.backgroundColor = "rgb(64, 82, 181)";
   scanBtn.style.color = "white";
-  const categories = ["valid", "redirected", "broken", "skipped"];
 
   // Calling download event listener function
   downloadEventListener(results);
@@ -99,8 +100,7 @@ function downloadReport(data, categories, filename="All-Links-Report") {
 
 // Download report event listeners
 function downloadEventListener(results) {
-  const categories = ["valid", "redirected", "broken", "skipped"];
-
+  
   // Download report event listeners
   downloadBtn.addEventListener("click", async () => {
     downloadReport(results.results, categories);
