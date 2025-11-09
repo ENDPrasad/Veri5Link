@@ -7,6 +7,12 @@ const skippedLinksCount = document.getElementById("skipped");
 const resetBtn = document.getElementById("reset");
 const downloadBtn = document.getElementById("download-report");
 const closeBtn = document.getElementById("close");
+const validLinksDownloadBtn = document.getElementById("valid-links-download");
+const brokenLinksDownloadBtn = document.getElementById("broken-links-download");
+const redirectedLinksDownloadBtn = document.getElementById("redirected-links-download");
+const skippedLinksDownloadBtn = document.getElementById("skipped-links-download");
+const categories = ["valid", "redirected", "broken", "skipped"];
+
 
 closeBtn.addEventListener("click", () => {
   window.close();
@@ -46,9 +52,8 @@ scanBtn.addEventListener("click", async () => {
   scanBtn.style.backgroundColor = "rgb(64, 82, 181)";
   scanBtn.style.color = "white";
 
-  downloadBtn.addEventListener("click", async () => {
-    downloadReport(results.results);
-  });
+  // Calling download event listener function
+  downloadEventListener(results);
 
   await chrome.tabs.sendMessage(tab.id, {
     action: "highlight_links",
@@ -69,9 +74,8 @@ function sendMessageAsync(message) {
   });
 }
 
-function downloadReport(data) {
-  const categories = ["valid", "redirected", "broken", "skipped"];
-
+// Function to download report
+function downloadReport(data, categories) {
   // Build text dynamically based on available categories
   const text = categories
     .map((key) => {
@@ -88,7 +92,35 @@ function downloadReport(data) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "Links-List.txt";
+  filename = categories.length === 1? categories[0].charAt(0).toUpperCase() + categories[0].slice(1) + "-Links-Report" : "All-Links-Report";
+  a.download = filename+".txt";
   a.click();
   URL.revokeObjectURL(url);
+}
+
+
+// Download report event listeners
+function downloadEventListener(results) {
+
+  // Download report event listeners
+  downloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, categories);
+  });
+
+  // Individual category download listeners
+  validLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[0]]);
+  });
+
+  brokenLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[2]]);
+  });
+
+  redirectedLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[1]]);
+  });
+
+  skippedLinksDownloadBtn.addEventListener("click", async () => {
+    downloadReport(results.results, [categories[3]]);
+  });
 }
